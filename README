@@ -1,0 +1,3 @@
+This is self-hosted git service, where you can host your on private git server on kubernetes as a pod.
+Refer this blog for the deployment.
+https://invisible.hashnode.dev/gitea-self-hosted-git-platform?source=more_articles_bottom_blogs
