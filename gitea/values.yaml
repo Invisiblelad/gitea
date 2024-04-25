@@ -15,7 +15,8 @@ service:
 persistence:
   enabled: true
   size: 10Gi
-  storageClassName: network-block
+  volumeClaimName: data
+  storageClassName: ebs-sc
 
 resources:
   cpu: 100m
@@ -23,6 +24,7 @@ resources:
 
 volumeMounts:
   tmp:
+    name: gitea-tmp
     mountPath: /tmp
     sizeLimit: '10Mi'
     medium: 'Memory'
