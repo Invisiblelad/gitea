@@ -1,0 +1,86 @@
+{{- if .Values.statefulSet.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "gitea.fullname" . }}
+spec:
+  serviceName: {{ include "gitea.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gitea.fullname" . }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.persistence.volumeClaimName }}
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+        storageClassName: {{ .Values.persistence.storageClassName }}
+        volumeMode: Filesystem
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitea.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: {{ .Values.volumeMounts.tmp.name }}
+              mountPath: {{ .Values.volumeMounts.tmp.mountPath }}
+              readOnly: false
+            - name: {{ .Values.persistence.volumeClaimName }}
+              mountPath: {{ .Values.volumeMounts.data.mountPath }}
+              readOnly: false
+          resources:
+            requests:
+              cpu: {{ .Values.resources.cpu }}
+              memory: {{ .Values.resources.memory }}
+      volumes:
+        - name: {{ .Values.volumeMounts.tmp.name }}
+          emptyDir:
+            sizeLimit: {{ .Values.volumeMounts.tmp.sizeLimit }}
+            medium: {{ .Values.volumeMounts.tmp.medium }}
+{{- else }}
+# templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gitea.fullname" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gitea.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "gitea.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: {{ .Values.volumeMounts.tmp.name }}
+              mountPath: {{ .Values.volumeMounts.tmp.mountPath }}
+              readOnly: false
+          resources:
+            requests:
+              cpu: {{ .Values.resources.cpu }}
+              memory: {{ .Values.resources.memory }}
+      volumes:
+        - name: {{ .Values.volumeMounts.tmp.name }}
+          emptyDir:
+            sizeLimit: {{ .Values.volumeMounts.tmp.sizeLimit }}
+            medium: {{ .Values.volumeMounts.tmp.medium }}
+{{- end }}
+

@@ -1,0 +1,30 @@
+replicaCount: 1
+
+statefulset:
+  enabled: true
+
+image:
+  repository: gitea/gitea
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClassName: network-block
+
+resources:
+  cpu: 100m
+  memory: 128Mi
+
+volumeMounts:
+  tmp:
+    mountPath: /tmp
+    sizeLimit: '10Mi'
+    medium: 'Memory'
+  data:
+    mountPath: /data
