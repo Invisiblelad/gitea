@@ -4,13 +4,37 @@ statefulSet:
   enabled: true
 
 image:
-  repository: gitea/gitea
-  tag: latest
-  pullPolicy: IfNotPresent
-
+  gitea:
+    repository: gitea/gitea
+    tag: latest
+    pullPolicy: IfNotPresent
+  postgres:
+    repository: postgres/postgres
+    tag: latest
+    pullPolicy: IfNotPresent
 service:
-  type: ClusterIP
+  type: NodePort
   port: 3000
+
+postgresql:
+  enabled: true
+  postgresUser: gitea
+  postgresPassword: gitea
+  postgresDatabase: gitea
+  port: 5432
+  targetPort: 5432
+  volume:
+    name: postgresql-data
+    path: /var/lib/postgresql/data
+
+gitea:
+  dbType: postgres
+  dbHost: postgresql
+  dbPort: 5432
+  dbName: gitea
+  dbUser: gitea
+  dbPassword: gitea
+  autoCreateTables: true
 
 persistence:
   enabled: true

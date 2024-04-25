@@ -1,0 +1,13 @@
+{{- if .Values.postgresql.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "postgresql.fullname" . }}
+spec:
+  ports:
+    - port: {{ .Values.postgresql.port }}  # PostgreSQL default port
+      targetPort: {{ .Values.postgresql.targetPort }}
+  selector:
+    app: {{ include "postgresql.fullname" . }}  # Make sure this matches the labels of your PostgreSQL pods
+{{- end }}
+

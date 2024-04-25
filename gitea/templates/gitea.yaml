@@ -31,6 +31,23 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 3000
+{{- if .Values.postgresql.enabled }}
+          env:
+            - name: DB_TYPE
+              value: {{ .Values.gitea.dbType }}
+            - name: DB_HOST
+              value: {{ .Values.gitea.dbHost }}
+            - name: DB_PORT
+              value: "{{ .Values.gitea.dbPort }}"
+            - name: DB_NAME
+              value: {{ .Values.gitea.dbName }}
+            - name: DB_USER
+              value: {{ .Values.gitea.dbUser }}
+            - name: DB_PASSWD
+              value: {{ .Values.gitea.dbPassword | quote }}
+            - name: AUTO_CREATE_TABLES
+              value: "{{ .Values.gitea.autoCreateTables }}"
+{{- end }}
           volumeMounts:
             - name: {{ .Values.volumeMounts.tmp.name }}
               mountPath: {{ .Values.volumeMounts.tmp.mountPath }}
@@ -65,10 +82,27 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image.gitea.repository }}:{{ .Values.image.gitea.tag }}"
+          imagePullPolicy: {{ .Values.image.gitea.pullPolicy }}
           ports:
             - containerPort: 3000
+{{- if .Values.postgresql.enabled }}
+          env:
+            - name: DB_TYPE
+              value: {{ .Values.gitea.dbType }}
+            - name: DB_HOST
+              value: {{ .Values.gitea.dbHost }}
+            - name: DB_PORT
+              value: "{{ .Values.gitea.dbPort }}"
+            - name: DB_NAME
+              value: {{ .Values.gitea.dbName }}
+            - name: DB_USER
+              value: {{ .Values.gitea.dbUser }}
+            - name: DB_PASSWD
+              value: {{ .Values.gitea.dbPassword | quote }}
+            - name: AUTO_CREATE_TABLES
+              value: "{{ .Values.gitea.autoCreateTables }}"
+{{- end }}
           volumeMounts:
             - name: {{ .Values.volumeMounts.tmp.name }}
               mountPath: {{ .Values.volumeMounts.tmp.mountPath }}
@@ -83,4 +117,5 @@ spec:
             sizeLimit: {{ .Values.volumeMounts.tmp.sizeLimit }}
             medium: {{ .Values.volumeMounts.tmp.medium }}
 {{- end }}
+
 

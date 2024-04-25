@@ -1,6 +1,14 @@
 {{/*
-Generate a fullname for resources based on chart name.
+Generate a fullname for gitea
 */}}
 {{- define "gitea.fullname" -}}
 {{- printf "%s"  .Chart.Name -}}
 {{- end -}}
+
+{{/*
+Generate a fullname for posgresql
+*/}}
+{{- define "postgresql.fullname" -}}
+{{- printf "%s"  .Chart.Name -}}
+{{- end -}}
+
