@@ -2,17 +2,17 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name:{{ include "postgresql.fullname" . }}
+  name: {{ include "postgresql.fullname" . }}
 spec:
-  serviceName:{{ include "postgresql.fullname" . }}
+  serviceName: {{ include "postgresql.fullname" . }}
   replicas: 1
   selector:
     matchLabels:
-      app:{{ include "postgresql.fullname" . }}
+      app: {{ include "postgresql.fullname" . }}
   template:
     metadata:
       labels:
-        app:{{ include "postgresql.fullname" . }}
+        app: {{ include "postgresql.fullname" . }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
