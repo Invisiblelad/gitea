@@ -9,7 +9,7 @@ image:
     tag: latest
     pullPolicy: IfNotPresent
   postgres:
-    repository: postgres/postgres
+    repository: postgres
     tag: latest
     pullPolicy: IfNotPresent
 service:

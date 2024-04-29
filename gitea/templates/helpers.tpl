@@ -6,9 +6,9 @@ Generate a fullname for gitea
 {{- end -}}
 
 {{/*
-Generate a fullname for posgresql
+Generate a fullname for PostgreSQL
 */}}
 {{- define "postgresql.fullname" -}}
-{{- printf "%s"  .Chart.Name -}}
+postgresql
 {{- end -}}
 

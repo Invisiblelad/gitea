@@ -15,7 +15,7 @@ spec:
         app: {{ include "postgresql.fullname" . }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "postgresql.fullname" . }}
           image: "{{ .Values.image.postgres.repository }}:{{ .Values.image.postgres.tag }}"
           imagePullPolicy: {{ .Values.image.postgres.pullPolicy }}
           env:
